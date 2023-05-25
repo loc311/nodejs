@@ -18,6 +18,39 @@ const RoleShop = {
 
 class AccessService {
 
+    static handleRefreshTokenV2 = async ({ user, keyStore, refreshToken }) => {
+        //handleRefreshToken để bảo mật tránh việc bị lấy 1 refreshToken ra sử dụng nhiều lần
+        const { userId, email } = user;
+        if (keyStore.refreshTokenUsed.includes(refreshToken)) {
+            await KeyTokenService.deleteKeyById(userId)
+            throw new ForbiddenError('Login again, tokens been deleted')
+        }
+
+        if (keyStore.refreshToken !== refreshToken) throw new AuthFailureError('Shop not register')
+        //check userid
+        const foundShop = await findByEmail({ email })
+        if (!foundShop) throw new AuthFailureError('Shop not register')
+
+        //create 1 cặp mới
+        const tokens = await createTokenPair({ userId, email }, keyStore.publicKey, keyStore.privateKey)
+        //update token
+        await keyStore.updateOne({
+            $set: {
+                refreshToken: tokens.refreshToken
+            },
+            $addToSet: {
+                refreshTokenUsed: refreshToken
+            }
+        })
+
+        return {
+            user,
+            tokens
+        }
+
+    }
+
+
     static handleRefreshToken = async (refreshToken) => {
         //handleRefreshToken để bảo mật tránh việc bị lấy 1 refreshToken ra sử dụng nhiều lần
         //check token đã được sử dụng chưa và lôi nó ra
