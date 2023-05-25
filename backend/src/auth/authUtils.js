@@ -84,5 +84,5 @@ module.exports = {
     createTokenPair,
     authentication,
     verifyJWT,
-    authenticationV2
+    authentication
 }
