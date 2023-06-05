@@ -14,5 +14,9 @@ router.use(authentication)
 //logout
 router.post('', asyncHandler(productController.createProduct))
 
+//query
+router.get('/draft/all', asyncHandler(productController.getAllDraftsForShop))
+
+router.get('/pushlished/all', asyncHandler(productController.getAllPushlishForShop))
 
 module.exports = router

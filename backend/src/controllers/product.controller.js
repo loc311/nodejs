@@ -7,14 +7,40 @@ const ProductService = require("../services/product.service")
 class ProductController {
 
   createProduct = async (req, res, next) => {
-    
+
     new SuccessResponse({
-        message: 'Created new Product',
-        metadata: await ProductService.createProduct(req.body.product_type, {
-            ...req.body,
-            product_shop: req.user.userId
-        })
-      }).send(res) 
+      message: 'Created new Product',
+      metadata: await ProductService.createProduct(req.body.product_type, {
+        ...req.body,
+        product_shop: req.user.userId
+      })
+    }).send(res)
+  }
+
+  // /**
+  //  * @des get all draft
+  //  * @param {Number} limit 
+  //  * @param {Number} skip 
+  //  * @return {JSON}
+  //  */
+  getAllDraftsForShop = async (req, res, next) => {
+
+    new SuccessResponse({
+      message: 'Created new Product',
+      metadata: await ProductService.findAllDraftForShop({
+       
+        product_shop: req.user.userId
+      })
+    }).send(res)
+  }
+
+  getAllPushlishForShop = async (req, res, next) => {
+    new SuccessResponse({
+      message: 'Get All Pushlish Shop',
+      metadata: await ProductService.findAllPublishForShop({
+        product_shop: req.user.userId
+      })
+    }).send(res)
   }
 
 }
