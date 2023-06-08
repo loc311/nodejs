@@ -43,6 +43,46 @@ class ProductController {
     }).send(res)
   }
 
+  publishProductByShop = async (req, res, next) => {
+    new SuccessResponse({
+      message: 'Publish Product By Shop',
+      metadata: await ProductService.publishProductByShop({
+        product_id: req.params.id,
+        product_shop: req.user.userId
+      })
+    }).send(res)
+  }
+
+  unPublishProductByShop = async (req, res, next) => {
+    new SuccessResponse({
+      message: 'unPublish Product By Shop',
+      metadata: await ProductService.unPublishProductByShop({
+        product_id: req.params.id,
+        product_shop: req.user.userId
+      })
+    }).send(res)
+  }
+
+  getListSearchProduct = async (req, res, next) => {
+    new SuccessResponse({
+      message: 'Get List Search Product',
+      metadata: await ProductService.searchProduct(req.params)
+    }).send(res)
+  }
+
+  findAllProduct = async (req, res, next) => {
+    new SuccessResponse({
+      message: 'Get List All Product',
+      metadata: await ProductService.findAllProduct(req.query)
+    }).send(res)
+  }
+
+  findProduct= async (req, res, next) => {
+    new SuccessResponse({
+      message: 'Get Product',
+      metadata: await ProductService.findProduct({product_id:req.params.product_id})
+    }).send(res)
+  }
 }
 
 module.exports = new ProductController()
