@@ -13,8 +13,9 @@ router.get('/:product_id', asyncHandler(productController.findProduct))
 //authentication bên dưới là có authen
 router.use(authentication)
 
-//logout
+//create
 router.post('', asyncHandler(productController.createProduct))
+router.patch('/:productId', asyncHandler(productController.updateProduct))
 router.post('/publish/:id', asyncHandler(productController.publishProductByShop))
 router.post('/unpublish/:id', asyncHandler(productController.unPublishProductByShop))
 
