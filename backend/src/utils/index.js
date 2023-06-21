@@ -2,6 +2,9 @@
 
 //để return infordata 
 const _ = require('lodash')
+const {Types} = require('mongoose')
+
+const convertToObjectIdMongodb = id => new Types.ObjectId(id)
 
 const getInfoData = ({ fildes = [], object = {} }) => {
     return _.pick(object, fildes)
@@ -24,21 +27,6 @@ const removeUndefinedObject = obj => {
     })
 
     return obj
-}
-
-const updateNestedObjectParserV2 = obj => {
-    const final = {}
-    Object.keys(obj).forEach(k => {
-        if (typeof obj[k] === 'object' && !Array.isArray(obj[k])) {
-            const response = updateNestedObjectParser(obj[k])
-            Object.keys(response).forEach(a => {
-                final[`${k}.${a}`] = response[a]
-            })
-        } else {
-            final[k] = obj[k]
-        }
-    })
-    return final
 }
 
 const updateNestedObjectParse = object => {
@@ -64,5 +52,6 @@ module.exports = {
     getSelcetData,
     unGetSelcetData,
     removeUndefinedObject,
-    updateNestedObjectParse
+    updateNestedObjectParse,
+    convertToObjectIdMongodb
 }
